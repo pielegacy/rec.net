@@ -1,2 +1,7 @@
 bin
 obj
+Output
+.vscode
+*.json
+*.csv
+*.txt
