@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.IO;
 using System.Linq;
+using System.Data.SqlClient;
 
 namespace REC
 {
@@ -78,11 +79,11 @@ namespace REC
             Random rand = new Random();
             try
             {
-            File.WriteAllText($"Output/{_from.ToString("dd-MM-yyyy")}_{_to.ToString("dd-MM-yyyy")}.csv", output);
+                File.WriteAllText($"Output/{_from.ToString("dd-MM-yyyy")}_{_to.ToString("dd-MM-yyyy")}.csv", output);
             }
             catch
             {
-                File.WriteAllText($"Output/{_from.ToString("dd-MM-yyyy")}_{_to.ToString("dd-MM-yyyy")}_{rand.Next(1,100)}.csv", output);
+                File.WriteAllText($"Output/{_from.ToString("dd-MM-yyyy")}_{_to.ToString("dd-MM-yyyy")}_{rand.Next(1, 100)}.csv", output);
             }
             Console.WriteLine("Saved...");
         }
@@ -101,6 +102,20 @@ namespace REC
         public DateTime CompletedTime { get; set; }
         public List<Dictionary<string, string>> CertificateRanges { get; set; }
 
+    }
+    public class AccessConn
+    {
+        public AccessConn()
+        {
+            using (var connection = new SqlConnection(@"Provider = Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\Alex\Documents\Test.accdb;"))
+            {
+                SqlCommand comm = new SqlCommand("select * from TableNames;", connection);
+                connection.Open();
+                var reader = comm.ExecuteReader();
+                while (reader.Read())
+                    Console.WriteLine(JsonConvert.SerializeObject(reader.GetString(0)));
+            }
+        }
     }
     public static class RECFormat
     {
