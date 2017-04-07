@@ -72,6 +72,9 @@ namespace REC
                     {
                         Console.WriteLine("Error Calculating Quantity, carrying on...");
                     }
+                    var formattedValues = c.Values.ToList();
+                    foreach (string v in formattedValues)
+                        v.Replace(",", "\",\"");
                     output += String.Join(",", c.Values.ToList()) + "\n";
                 });
             }
